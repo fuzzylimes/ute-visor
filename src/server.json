@@ -2,5 +2,9 @@
     {
         "name": "UteDemo",
         "host": "http://localhost:5000"
+    },
+    {
+        "name": "UteDemo2",
+        "host": "http://localhost:5000"
     }
 ]

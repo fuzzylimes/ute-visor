@@ -1,17 +1,27 @@
 <div class="container">
     {{#each server}}
     <div class="card my-3">
-        <div class="card-header">
+        <div class="card-header ">
+            <span class="badge badge-success badge-pill {{this.name}}-status"></span>
             {{this.name}} - {{this.host}}
         </div>
-        <ul class="list-group list-group-flush">
-            <li class="list-group-item">Cras justo odio</li>
-            <li class="list-group-item">Dapibus ac facilisis in</li>
-            <li class="list-group-item">Vestibulum at eros</li>
+        <ul class="list-group {{this.name}}-stat-list">
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                Cras justo odio
+                <span class="badge badge-primary badge-pill">14</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                Dapibus ac facilisis in
+                <span class="badge badge-primary badge-pill">2</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                Morbi leo risus
+                <span class="badge badge-primary badge-pill">1</span>
+            </li>
         </ul>
         <div class="card-body">
-            <button data-toggle="modal" data-target="#{{this.name}}-stop" class="btn btn-primary">Stop</button>
-            <button data-toggle="modal" data-target="#{{this.name}}-start" class="btn btn-primary">Start</button>
+            <button data-toggle="modal" data-target="#{{this.name}}-stop" class="btn btn-danger">Stop</button>
+            <button data-toggle="modal" data-target="#{{this.name}}-start" class="btn btn-success">Start</button>
         </div>
     </div>
     <!-- Modal -->

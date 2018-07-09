@@ -1,8 +1,10 @@
 const express = require('express');
+const app = express();
+const http = require('http').Server(app);
+const io = require('socket.io')(http);
 const exphbs = require('express-handlebars');
 const request = require('request');
 const path = require('path');
-const app = express();
 const servers = require('./src/server');
 const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -17,16 +19,47 @@ app.use(express.static(path.join(__dirname, '/public')));
 // Constants
 const port = 5555;
 
+function getDataFromServers(server){
+    return new Promise(function (resolve, reject){
+        request({
+            url: server.host + "/controls/stats",
+            body: server.name
+        }, (error, response, body) => {
+            if(error){
+                return reject(error);
+            } else {
+                let a = {}
+                a[response.request.body] = JSON.parse(body);
+                return resolve(a);
+            }
+        });
+    });
+}
+
+io.on('connection', function (socket) {
+    console.log('a user connected');
+});
 
 app.get('/', (req, res) => {
+    let promises = [];
+    for (let i=0; i < servers.length; i++){
+        promises.push(getDataFromServers(servers[i]))
+    }
+    Promise.all(promises)
+        .then(((data) => {
+            console.log(data);
+        }))
+        .catch((error) => {
+            console.log(error);
+        })
     res.render('home', {server: servers});
 });
 
-app.get('/controller', (req, res) => {
+app.get('/control/state', (req, res) => {
     let url = req.body.url;
-    let method = req.body.method.toUpperCase();
+    let state = req.body.state;
 });
 
-app.listen(port, () => {
+http.listen(port, () => {
     console.log(`Listening on port ${port}`);
 });
