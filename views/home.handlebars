@@ -1,0 +1,57 @@
+<div class="container">
+    {{#each server}}
+    <div class="card my-3">
+        <div class="card-header">
+            {{this.name}} - {{this.host}}
+        </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">Cras justo odio</li>
+            <li class="list-group-item">Dapibus ac facilisis in</li>
+            <li class="list-group-item">Vestibulum at eros</li>
+        </ul>
+        <div class="card-body">
+            <button data-toggle="modal" data-target="#{{this.name}}-stop" class="btn btn-primary">Stop</button>
+            <button data-toggle="modal" data-target="#{{this.name}}-start" class="btn btn-primary">Start</button>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="{{this.name}}-stop" tabindex="-1" role="dialog" aria-labelledby="{{this.name}}-stopLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="{{this.name}}-stopLabel">Do you really want to stop {{this.name}}?</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    This action will stop the running traffic on {{this.name}}. Do you want to continue?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="testing('{{this.host}}')">Stop</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="{{this.name}}-start" tabindex="-1" role="dialog" aria-labelledby="{{this.name}}-startLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="{{this.name}}-startLabel">Do you really want to start {{this.name}}?</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    This action will start the running traffic on {{this.name}}. Do you want to continue?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="testing('{{this.host}}')">Start</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{/each}}
+</div>
