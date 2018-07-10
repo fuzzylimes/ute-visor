@@ -25,6 +25,27 @@
     <script src="/socket.io/socket.io.js"></script>
     <script>
         var socket = io('http://localhost:5555');
+        socket.on('data update', function(data) {
+            console.log(data);
+            data.forEach(function(o){
+                var server = Object.keys(o)[0];
+                var state = o[server].state;
+                var span = document.getElementById(server+'-status');
+                console.log(span);
+                if(state ){
+                    if(span.textContent !== 'RUNNING') {
+                        var txt = document.createTextNode('RUNNING');
+                        span.appendChild(txt);
+                        span.classList.add('badge-success')
+                    }
+                } else {
+                    var txt = 'STOPPED';
+                    span.appendChild(txt);
+                    span.classList.add('badge-danger')
+                }
+                console.log(Object.keys(o));
+            })
+        });
     </script>
 </body>
 

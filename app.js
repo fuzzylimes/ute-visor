@@ -38,9 +38,14 @@ function getDataFromServers(server){
 
 io.on('connection', function (socket) {
     console.log('a user connected');
+
+    socket.on('disconnect', function () {
+        console.log('user disconnected');
+    });
 });
 
 app.get('/', (req, res) => {
+    res.render('home', {server: servers});
     let promises = [];
     for (let i=0; i < servers.length; i++){
         promises.push(getDataFromServers(servers[i]))
@@ -48,11 +53,11 @@ app.get('/', (req, res) => {
     Promise.all(promises)
         .then(((data) => {
             console.log(data);
+            io.emit('data update', data)
         }))
         .catch((error) => {
             console.log(error);
         })
-    res.render('home', {server: servers});
 });
 
 app.get('/control/state', (req, res) => {
@@ -63,3 +68,15 @@ app.get('/control/state', (req, res) => {
 http.listen(port, () => {
     console.log(`Listening on port ${port}`);
 });
+
+setInterval(function() {
+    let promises = [];
+    for (let i = 0; i < servers.length; i++) {
+        promises.push(getDataFromServers(servers[i]))
+    }
+    Promise.all(promises)
+        .then(((data) => {
+            console.log(data);
+            io.emit('data update', data)
+        }));
+},10000);
