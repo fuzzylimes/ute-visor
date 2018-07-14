@@ -44,7 +44,7 @@ function getDataFromServers(server){
     });
 }
 
-function getData(socket=false) {
+function getData(socket=io) {
     let promises = [];
     for (let i = 0; i < servers.length; i++) {
         promises.push(getDataFromServers(servers[i]))
@@ -52,8 +52,6 @@ function getData(socket=false) {
     Promise.all(promises)
         .then(((data) => {
             // console.log(data);
-            !socket ?
-            io.emit('data update', data) :
             socket.emit('data update', data);
         }))
         .catch((error) => {
