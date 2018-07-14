@@ -6,17 +6,6 @@
             <span class="pl-1">{{this.name}} - {{this.host}}</span>
         </div>
         <div class="card-body" id="{{this.name}}-stat-list">
-            {{!-- <li id="{{this.name}}-test" class="list-group-item d-flex justify-content-between align-items-center">
-                <pre id="{{this.name}}-data"></pre>
-            </li>
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-                Dapibus ac facilisis in
-                <span class="badge badge-primary badge-pill">2</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-                Morbi leo risus
-                <span class="badge badge-primary badge-pill">1</span>
-            </li> --}}
         </div>
         <div class="card-body">
             <button data-toggle="modal" data-target="#{{this.name}}-stop-modal" id="{{this.name}}-stop" class="btn btn-danger">Stop</button>
@@ -38,7 +27,10 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="testing('{{this.host}}')">Stop</button>
+                    <form action="/control/state/{{this.name}}" method="get">
+                        <input type="hidden" name="state" value="stop">
+                        <button type="submit" class="btn btn-primary">Stop</button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -57,7 +49,10 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="testing('{{this.host}}')">Start</button>
+                    <form action="/control/state/{{this.name}}" method="get">
+                        <input type="hidden" name="state" value="ute">
+                        <button type="submit" class="btn btn-primary">Start</button>
+                    </form>
                 </div>
             </div>
         </div>

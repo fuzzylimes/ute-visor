@@ -41,22 +41,23 @@ socket.on('data update', function (data) {
 function setStatus(server, o){
     var state = o[server].state;
     var span = document.getElementById(server + '-status');
+    var spanText = span.firstChild;
     if (state == 'on') {
         if (span.textContent !== 'RUNNING') {
-            var txt = document.createTextNode('RUNNING');
-            span.appendChild(txt);
-            span.classList.add('badge-success')
+            span.textContent ="RUNNING";
+            span.classList.add('badge-success');
+            span.classList.remove('badge-primary');
             let button = document.getElementById(`${server}-start`);
             button.setAttribute("disabled", true);
         }
     } else if (state == 'off') {
-        var txt = 'STOPPED';
-        span.appendChild(txt);
-        span.classList.add('badge-primary')
+        span.textContent = "STOPPED";
+        span.classList.add('badge-primary');
+        span.classList.remove('badge-success');
         let button = document.getElementById(`${server}-stop`);
         button.setAttribute("disabled", true);
     } else {
-        var txt = 'UNKNOWN'
+        var txt = document.createTextNode('UNKNOWN');
         span.appendChild(txt);
         span.classList.add('badge-danger');
     }
