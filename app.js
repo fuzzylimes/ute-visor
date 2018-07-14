@@ -44,15 +44,17 @@ function getDataFromServers(server){
     });
 }
 
-function getData() {
+function getData(socket=false) {
     let promises = [];
     for (let i = 0; i < servers.length; i++) {
         promises.push(getDataFromServers(servers[i]))
     }
     Promise.all(promises)
         .then(((data) => {
-            console.log(data);
-            io.emit('data update', data);
+            // console.log(data);
+            !socket ?
+            io.emit('data update', data) :
+            socket.emit('data update', data);
         }))
         .catch((error) => {
             console.log(error);
@@ -60,11 +62,11 @@ function getData() {
 }
 
 io.on('connection', function (socket) {
-    console.log('a user connected');
-    getData();
+    console.log(`a user connected: ${socket.id}`);
+    getData(socket);
 
     socket.on('disconnect', function () {
-        console.log('user disconnected');
+        console.log(`user disconnected: ${socket.id}`);
     });
 });
 
