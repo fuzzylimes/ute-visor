@@ -12,12 +12,6 @@ socket.on('data update', function (data) {
         urls.forEach(url => {
             let p =  o[server].urls[url];
             let methods = Object.keys(p);
-            // methods.forEach(m => {
-            //     let codes = Object.keys(p[m].responses);
-            //     console.log(codes);
-            //     responses = responses.concat(codes);
-            // });
-            // console.log(responses);
             methods.forEach(m => {
                 myHtml += `<tr><td>${url}</td><td>${m}</td><td>${p[m].tx}</td><td>${p[m].rx}</td>`
                 responses.forEach(r =>{
@@ -47,14 +41,12 @@ socket.on('data update', function (data) {
 function setStatus(server, o){
     var state = o[server].state;
     var span = document.getElementById(server + '-status');
-    // console.log(span);
     if (state == 'on') {
         if (span.textContent !== 'RUNNING') {
             var txt = document.createTextNode('RUNNING');
             span.appendChild(txt);
             span.classList.add('badge-success')
             let button = document.getElementById(`${server}-start`);
-            // button.classList.add('disabled');
             button.setAttribute("disabled", true);
         }
     } else if (state == 'off') {
@@ -62,7 +54,6 @@ function setStatus(server, o){
         span.appendChild(txt);
         span.classList.add('badge-primary')
         let button = document.getElementById(`${server}-stop`);
-        // button.classList.add('disabled');
         button.setAttribute("disabled", true);
     } else {
         var txt = 'UNKNOWN'
