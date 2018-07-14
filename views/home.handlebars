@@ -19,12 +19,12 @@
             </li> --}}
         </div>
         <div class="card-body">
-            <button data-toggle="modal" data-target="#{{this.name}}-stop" class="btn btn-danger">Stop</button>
-            <button data-toggle="modal" data-target="#{{this.name}}-start" class="btn btn-success">Start</button>
+            <button data-toggle="modal" data-target="#{{this.name}}-stop-modal" id="{{this.name}}-stop" class="btn btn-danger">Stop</button>
+            <button data-toggle="modal" data-target="#{{this.name}}-start-modal" id="{{this.name}}-start" class="btn btn-success">Start</button>
         </div>
     </div>
     <!-- Modal -->
-    <div class="modal fade" id="{{this.name}}-stop" tabindex="-1" role="dialog" aria-labelledby="{{this.name}}-stopLabel" aria-hidden="true">
+    <div class="modal fade" id="{{this.name}}-stop-modal" tabindex="-1" role="dialog" aria-labelledby="{{this.name}}-stopLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -43,7 +43,7 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" id="{{this.name}}-start" tabindex="-1" role="dialog" aria-labelledby="{{this.name}}-startLabel" aria-hidden="true">
+    <div class="modal fade" id="{{this.name}}-start-modal" tabindex="-1" role="dialog" aria-labelledby="{{this.name}}-startLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
