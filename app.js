@@ -21,15 +21,19 @@ const port = 5555;
 
 function getDataFromServers(server){
     return new Promise(function (resolve, reject){
+        let a = {};
         request({
             url: server.host + "/controls/stats",
-            body: server.name
+            headers: {
+                'name': server.name
+            }
         }, (error, response, body) => {
             if(error){
-                return reject(error);
+                // return reject(error);
+                a[response.request.headers.name] = {state: 'unk'}
+                return reject(a)
             } else {
-                let a = {}
-                a[response.request.body] = JSON.parse(body);
+                a[response.request.headers.name] = JSON.parse(body);
                 return resolve(a);
             }
         });
@@ -46,18 +50,18 @@ io.on('connection', function (socket) {
 
 app.get('/', (req, res) => {
     res.render('home', {server: servers});
-    let promises = [];
-    for (let i=0; i < servers.length; i++){
-        promises.push(getDataFromServers(servers[i]))
-    }
-    Promise.all(promises)
-        .then(((data) => {
-            console.log(data);
-            io.emit('data update', data)
-        }))
-        .catch((error) => {
-            console.log(error);
-        })
+    // let promises = [];
+    // for (let i=0; i < servers.length; i++){
+    //     promises.push(getDataFromServers(servers[i]))
+    // }
+    // Promise.all(promises)
+    //     .then(((data) => {
+    //         console.log(data);
+    //         io.emit('data update', data)
+    //     }))
+    //     .catch((error) => {
+    //         console.log(error);
+    //     })
 });
 
 app.get('/control/state', (req, res) => {
@@ -77,6 +81,9 @@ setInterval(function() {
     Promise.all(promises)
         .then(((data) => {
             console.log(data);
-            io.emit('data update', data)
-        }));
+            io.emit('data update', data);
+        }))
+        .catch((error) => {
+            console.log(error);
+        });
 },10000);

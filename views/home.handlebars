@@ -3,12 +3,11 @@
     <div class="card my-3">
         <div class="card-header ">
             <span class="badge badge-pill" id="{{this.name}}-status"></span>
-            {{this.name}} - {{this.host}}
+            <span class="pl-1">{{this.name}} - {{this.host}}</span>
         </div>
-        <ul class="list-group" id="{{this.name}}-stat-list">
-            {{!-- <li class="list-group-item d-flex justify-content-between align-items-center">
-                Cras justo odio
-                <span class="badge badge-primary badge-pill">14</span>
+        <div class="card-body" id="{{this.name}}-stat-list">
+            {{!-- <li id="{{this.name}}-test" class="list-group-item d-flex justify-content-between align-items-center">
+                <pre id="{{this.name}}-data"></pre>
             </li>
             <li class="list-group-item d-flex justify-content-between align-items-center">
                 Dapibus ac facilisis in
@@ -18,7 +17,7 @@
                 Morbi leo risus
                 <span class="badge badge-primary badge-pill">1</span>
             </li> --}}
-        </ul>
+        </div>
         <div class="card-body">
             <button data-toggle="modal" data-target="#{{this.name}}-stop" class="btn btn-danger">Stop</button>
             <button data-toggle="modal" data-target="#{{this.name}}-start" class="btn btn-success">Start</button>
