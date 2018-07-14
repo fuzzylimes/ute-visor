@@ -3,30 +3,7 @@ socket.on('data update', function (data) {
     console.log(data);
     data.forEach(function (o) {
         var server = Object.keys(o)[0];
-        var state = o[server].state;
-        var span = document.getElementById(server + '-status');
-        // console.log(span);
-        if (state == 'on') {
-            if (span.textContent !== 'RUNNING') {
-                var txt = document.createTextNode('RUNNING');
-                span.appendChild(txt);
-                span.classList.add('badge-success')
-                let button = document.getElementById(`${server}-start`);
-                // button.classList.add('disabled');
-                button.setAttribute("disabled", true);
-            }
-        } else if (state == 'off'){
-            var txt = 'STOPPED';
-            span.appendChild(txt);
-            span.classList.add('badge-primary')
-            let button = document.getElementById(`${server}-stop`);
-            // button.classList.add('disabled');
-            button.setAttribute("disabled", true);
-        } else {
-            var txt = 'UNKNOWN'
-            span.appendChild(txt);
-            span.classList.add('badge-danger');
-        }
+        setStatus(server, o);
 
         let urls = Object.keys(o[server].urls);
         let responses = getCodes(o[server]);
@@ -66,6 +43,33 @@ socket.on('data update', function (data) {
 
     });
 });
+
+function setStatus(server, o){
+    var state = o[server].state;
+    var span = document.getElementById(server + '-status');
+    // console.log(span);
+    if (state == 'on') {
+        if (span.textContent !== 'RUNNING') {
+            var txt = document.createTextNode('RUNNING');
+            span.appendChild(txt);
+            span.classList.add('badge-success')
+            let button = document.getElementById(`${server}-start`);
+            // button.classList.add('disabled');
+            button.setAttribute("disabled", true);
+        }
+    } else if (state == 'off') {
+        var txt = 'STOPPED';
+        span.appendChild(txt);
+        span.classList.add('badge-primary')
+        let button = document.getElementById(`${server}-stop`);
+        // button.classList.add('disabled');
+        button.setAttribute("disabled", true);
+    } else {
+        var txt = 'UNKNOWN'
+        span.appendChild(txt);
+        span.classList.add('badge-danger');
+    }
+}
 
 function getCodes(server){
     let responses = [];
