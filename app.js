@@ -8,8 +8,10 @@ const path = require('path');
 const servers = require('./src/server');
 const bodyParser = require('body-parser');
 let serverPairs = {};
+let serverList = [];
 servers.forEach(server => {
     serverPairs[server.name] = server.host;
+    serverList.push(server.name);
 });
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -33,9 +35,7 @@ function getDataFromServers(server){
             }
         }, (error, response, body) => {
             if(error){
-                // return reject(error);
-                a[response.request.headers.name] = {state: 'unk'}
-                return reject(a)
+                return reject()
             } else {
                 a[response.request.headers.name] = JSON.parse(body);
                 return resolve(a);
@@ -49,12 +49,25 @@ function getData(socket=io) {
     for (let i = 0; i < servers.length; i++) {
         promises.push(getDataFromServers(servers[i]))
     }
-    Promise.all(promises)
+    Promise.all(promises.map(p => p.catch(e => e)))
         .then(((data) => {
-            // console.log(data);
+            console.log(data);
+            data = data.filter(function (n) { return n != undefined }); 
+            let names = [];
+            data.forEach(d => {
+                names.push(Object.keys(d)[0]);
+            });
+            serverList.forEach(s =>{
+                if(names.indexOf(s) < 0){
+                    let tmp = {};
+                    tmp[s] = { state: 'unk' }
+                    data.push(tmp);
+                }
+            })
+            console.log(data);
             socket.emit('data update', data);
         }))
-        .catch((error) => {
+        .catch((e) => {
             console.log(error);
         });
 }

@@ -1,10 +1,14 @@
 var socket = io('http://localhost:5555');
 socket.on('data update', function (data) {
-    console.log(data);
+    // console.log(data);
     data.forEach(function (o) {
         var server = Object.keys(o)[0];
         setStatus(server, o);
-
+        // Handle unkown state
+        if (o[server].state == 'unk'){
+            return true;
+        }
+            
         let urls = Object.keys(o[server].urls);
         let responses = getCodes(o[server]);
         responses = [...new Set(responses)].sort();
@@ -47,6 +51,7 @@ function setStatus(server, o){
             span.textContent ="RUNNING";
             span.classList.add('badge-success');
             span.classList.remove('badge-primary');
+            span.classList.remove('badge-danger');
             let button = document.getElementById(`${server}-start`);
             button.setAttribute("disabled", true);
         }
@@ -54,12 +59,18 @@ function setStatus(server, o){
         span.textContent = "STOPPED";
         span.classList.add('badge-primary');
         span.classList.remove('badge-success');
+        span.classList.remove('badge-danger');
         let button = document.getElementById(`${server}-stop`);
         button.setAttribute("disabled", true);
     } else {
-        var txt = document.createTextNode('UNKNOWN');
-        span.appendChild(txt);
+        span.textContent = 'UNKNOWN';
+        span.classList.remove('badge-success');
+        span.classList.remove('badge-primary');
         span.classList.add('badge-danger');
+        let button = document.getElementById(`${server}-stop`);
+        button.setAttribute("disabled", true);
+        button = document.getElementById(`${server}-start`);
+        button.setAttribute("disabled", true);
     }
 }
 
