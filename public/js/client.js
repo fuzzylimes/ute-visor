@@ -51,29 +51,26 @@ function setStatus(server, o){
             span.classList.add('badge-success');
             span.classList.remove('badge-primary');
             span.classList.remove('badge-danger');
-            let button = document.getElementById(`${server}-start`);
-            button.setAttribute("disabled", true);
-            button = document.getElementById(`${server}-stop`);
-            button.removeAttribute("disabled");
+            document.getElementById(`${server}-start`).setAttribute("disabled", true);
+            document.getElementById(`${server}-reset`).setAttribute("disabled", true);
+            document.getElementById(`${server}-stop`).removeAttribute("disabled");
         }
     } else if (state == 'off') {
         span.textContent = "STOPPED";
         span.classList.add('badge-primary');
         span.classList.remove('badge-success');
         span.classList.remove('badge-danger');
-        let button = document.getElementById(`${server}-stop`);
-        button.setAttribute("disabled", true);
-        button = document.getElementById(`${server}-start`);
-        button.removeAttribute("disabled");
+        document.getElementById(`${server}-stop`).setAttribute("disabled", true);
+        document.getElementById(`${server}-start`).removeAttribute("disabled");
+        document.getElementById(`${server}-reset`).removeAttribute("disabled");
     } else {
         span.textContent = 'UNKNOWN';
         span.classList.remove('badge-success');
         span.classList.remove('badge-primary');
         span.classList.add('badge-danger');
-        let button = document.getElementById(`${server}-stop`);
-        button.setAttribute("disabled", true);
-        button = document.getElementById(`${server}-start`);
-        button.setAttribute("disabled", true);
+        document.getElementById(`${server}-stop`).setAttribute("disabled", true);
+        document.getElementById(`${server}-start`).setAttribute("disabled", true);
+        document.getElementById(`${server}-reset`).setAttribute("disabled", true);
     }
 }
 

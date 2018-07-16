@@ -8,8 +8,12 @@
         <div class="card-body" id="{{this.name}}-stat-list">
         </div>
         <div class="card-body">
-            <button data-toggle="modal" data-target="#{{this.name}}-stop-modal" id="{{this.name}}-stop" class="btn btn-danger">Stop</button>
-            <button data-toggle="modal" data-target="#{{this.name}}-start-modal" id="{{this.name}}-start" class="btn btn-success">Start</button>
+            <button data-toggle="modal" data-target="#{{this.name}}-stop-modal" id="{{this.name}}-stop" class="btn btn-danger">
+                <i class="fas fa-stop"></i> Stop</button>
+            <button data-toggle="modal" data-target="#{{this.name}}-start-modal" id="{{this.name}}-start" class="btn btn-success">
+                <i class="fas fa-play"></i> Start</button>
+            <button data-toggle="modal" data-target="#{{this.name}}-reset-modal" id="{{this.name}}-reset" class="btn btn-warning">
+                <i class="fas fa-sync"></i> Reset</button>
         </div>
     </div>
     <!-- Modal -->
@@ -52,6 +56,30 @@
                     <form action="/control/state/{{this.name}}" method="get">
                         <input type="hidden" name="state" value="ute">
                         <button type="submit" class="btn btn-primary">Start</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="{{this.name}}-reset-modal" tabindex="-1" role="dialog" aria-labelledby="{{this.name}}-resetLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="{{this.name}}-resetLabel">Do you really want to reset the stats for {{this.name}}?</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>This action will reset ALL of the stats on {{this.name}}.</p>
+                    <p>WARNING: THIS ACTION CANNOT BE UNDONE!</p>
+                    <p>Are you posivite you want to continue?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <form action="/control/state/{{this.name}}" method="get">
+                        <input type="hidden" name="state" value="reset">
+                        <button type="submit" class="btn btn-primary">Reset</button>
                     </form>
                 </div>
             </div>
