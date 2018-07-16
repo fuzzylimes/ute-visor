@@ -45,7 +45,6 @@ socket.on('data update', function (data) {
 function setStatus(server, o){
     var state = o[server].state;
     var span = document.getElementById(server + '-status');
-    var spanText = span.firstChild;
     if (state == 'on') {
         if (span.textContent !== 'RUNNING') {
             span.textContent ="RUNNING";
@@ -54,6 +53,8 @@ function setStatus(server, o){
             span.classList.remove('badge-danger');
             let button = document.getElementById(`${server}-start`);
             button.setAttribute("disabled", true);
+            button = document.getElementById(`${server}-stop`);
+            button.removeAttribute("disabled");
         }
     } else if (state == 'off') {
         span.textContent = "STOPPED";
@@ -62,6 +63,8 @@ function setStatus(server, o){
         span.classList.remove('badge-danger');
         let button = document.getElementById(`${server}-stop`);
         button.setAttribute("disabled", true);
+        button = document.getElementById(`${server}-start`);
+        button.removeAttribute("disabled");
     } else {
         span.textContent = 'UNKNOWN';
         span.classList.remove('badge-success');
