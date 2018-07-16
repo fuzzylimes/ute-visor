@@ -17,13 +17,15 @@ socket.on('data update', function (data) {
             let p =  o[server].urls[url];
             let methods = Object.keys(p);
             methods.forEach(m => {
-                myHtml += `<tr><td>${url}</td><td>${m}</td><td>${p[m].tx}</td><td>${p[m].rx}</td>`
+                let success = ((p[m].tx / p[m].expected) * 100);
+                let c;
+                success < 100 ? c = 'class="table-warning"' : c = 'class="table-success"';
+                myHtml += `<tr ${c}><td>${url}</td><td>${m}</td><td>${p[m].tx}</td><td>${p[m].rx}</td>`
                 responses.forEach(r =>{
                     p[m].responses.hasOwnProperty(r) ? 
                     myHtml += `<td>${p[m].responses[r]}</td>` :
                     myHtml += `<td>0</td>`;
                 });
-                let success = ((p[m].tx / p[m].expected) * 100);
                 success < 100 ? success = succes.toFixed(4) : true; 
                 myHtml += `<td>${p[m].times.min.toFixed(4)}</td><td>${p[m].times.max.toFixed(4)}</td><td>${(p[m].times.sum/p[m].tx).toFixed(4)}</td>
                 <td>${success}%</td></tr>`
