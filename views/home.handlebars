@@ -1,4 +1,41 @@
 <div class="container">
+    <div class="card text-white bg-primary my-3">
+        <div class="card-header ">
+            <h2 class="pl-1">Stats Summary</h2>
+        </div>
+        <div class="container">
+            <div class="row mx-2">
+                <div class="col">
+                    <div class="card">
+                        <div class="card-body text-primary text-center">
+                            <h4 class="card-title">Tx</h4>
+                            <p class="card-text" id="tx-total">XXX</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card">
+                        <div class="card-body text-primary text-center">
+                            <h4 class="card-title">Rx</h4>
+                            <p class="card-text" id="rx-total">XXX</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card">
+                        <div class="card-body text-primary text-center">
+                            <h4 class="card-title">Success</h4>
+                            <p class="card-text" id="success-total">XXX</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-body" id="totals-list">
+            This is a bunch of crap.
+        </div>
+    </div>
+
     {{#each server}}
     <div class="card my-3">
         <div class="card-header ">

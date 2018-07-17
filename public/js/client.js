@@ -1,6 +1,8 @@
 var socket = io('http://localhost:5555');
 socket.on('data update', function (data) {
     // console.log(data);
+    let summary = {};
+    let total = {tx: 0, rx: 0, success: 0, codes: {}};
     data.forEach(function (o) {
         var server = Object.keys(o)[0];
         setStatus(server, o);
@@ -17,7 +19,10 @@ socket.on('data update', function (data) {
             let p =  o[server].urls[url];
             let methods = Object.keys(p);
             methods.forEach(m => {
-                let success = ((p[m].tx / p[m].expected) * 100);
+                let success = ((p[m].rx / p[m].expected) * 100);
+                total.tx += p[m].tx;
+                total.rx += p[m].rx;
+                total.success += p[m].expected;
                 let c;
                 success < 100 ? c = 'class="table-warning"' : c = 'class="table-success"';
                 myHtml += `<tr ${c}><td>${url}</td><td>${m}</td><td>${p[m].tx}</td><td>${p[m].rx}</td>`
@@ -42,6 +47,11 @@ socket.on('data update', function (data) {
         card.innerHTML = head;
 
     });
+    document.getElementById('tx-total').textContent = total.tx;
+    document.getElementById('rx-total').textContent = total.rx;
+    let success = (total.rx / total.success)*100;
+    success < 100 ? success = success.toFixed(4) : true;
+    document.getElementById('success-total').textContent = `${success}%`;
 });
 
 function setStatus(server, o){
