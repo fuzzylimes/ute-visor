@@ -1,11 +1,15 @@
 let summary = {};
-let total = { tx: 0, rx: 0, success: 0, codes: {} };
+let total = { tx: [], rx: [], success: [], codes: {} };
 let responseCodes = [];
 
 var socket = io('http://localhost:5555');
 socket.on('data update', function (data) {
+    summary = {};
     // console.log(data);
-    data.forEach(function (o) {
+    data.forEach(function (o, index) {
+        total.tx[index] = 0;
+        total.rx[index] = 0;
+        total.success[index] = 0;
         var server = Object.keys(o)[0];
         setStatus(server, o);
         // Handle unkown state
@@ -23,9 +27,9 @@ socket.on('data update', function (data) {
             let methods = Object.keys(p);
             methods.forEach(m => {
                 let success = ((p[m].rx / p[m].expected) * 100);
-                total.tx += p[m].tx;
-                total.rx += p[m].rx;
-                total.success += p[m].expected;
+                total.tx[index] += p[m].tx;
+                total.rx[index] += p[m].rx;
+                total.success[index] += p[m].expected;
                 addToSummary(url, p[m]);
                 let c;
                 success < 100 ? c = 'class="table-warning"' : c = 'class="table-success"';
@@ -58,13 +62,16 @@ function addToSummary(url, data){
     if(!summary.hasOwnProperty(url)){
         summary[url] = {tx:0, rx:0, success:0, codes: {}};
     }
-    summary[url].tx = data.tx;
-    summary[url].rx = data.rx;
-    summary[url].success = data.expected;
+    summary[url].tx += data.tx;
+    summary[url].rx += data.rx;
+    summary[url].success += data.expected;
     responseCodes.forEach(r => {
-        data.responses.hasOwnProperty(r) ? 
-            summary[url].codes[r] = data.responses[r] :
+        if (!summary[url].codes.hasOwnProperty(r)) {
             summary[url].codes[r] = 0;
+        }
+        if (data.responses.hasOwnProperty(r)){
+            summary[url].codes[r] += data.responses[r];
+        } 
     });
 }
 
@@ -87,9 +94,9 @@ function buildTopSummary(){
     myHtml += `</table>`;
     document.getElementById('totals-list').innerHTML = head + myHtml;
 
-    document.getElementById('tx-total').textContent = total.tx;
-    document.getElementById('rx-total').textContent = total.rx;
-    let success = setSuccess(total.rx, total.success);
+    document.getElementById('tx-total').textContent = total.tx.reduce((a, b) => a + b, 0);
+    document.getElementById('rx-total').textContent = total.rx.reduce((a, b) => a + b, 0);
+    let success = setSuccess(total.rx.reduce((a, b) => a + b, 0), total.success.reduce((a, b) => a + b, 0));
     document.getElementById('success-total').textContent = `${success}%`;
 }
 
