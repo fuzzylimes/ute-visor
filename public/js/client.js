@@ -109,9 +109,11 @@ function setSuccess(rx, success){
 function setStatus(server, o){
     var state = o[server].state;
     var span = document.getElementById(server + '-status');
+    let rate = document.getElementById(server + "-rate");
     if (state == 'on') {
         if (span.textContent !== 'RUNNING') {
-            span.textContent ="RUNNING";
+            span.textContent = "RUNNING";
+            rate.textContent = o[server].rate;
             span.classList.add('badge-success');
             span.classList.remove('badge-primary');
             span.classList.remove('badge-danger');
@@ -121,6 +123,7 @@ function setStatus(server, o){
         }
     } else if (state == 'off') {
         span.textContent = "STOPPED";
+        rate.textContent = "0/0sec";
         span.classList.add('badge-primary');
         span.classList.remove('badge-success');
         span.classList.remove('badge-danger');
@@ -129,6 +132,7 @@ function setStatus(server, o){
         document.getElementById(`${server}-reset`).removeAttribute("disabled");
     } else {
         span.textContent = 'UNKNOWN';
+        rate.textContent = 'UNKNOWN';
         span.classList.remove('badge-success');
         span.classList.remove('badge-primary');
         span.classList.add('badge-danger');
