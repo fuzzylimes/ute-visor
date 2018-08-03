@@ -26,7 +26,7 @@ socket.on('data update', function (data) {
             let p =  o[server].urls[url];
             let methods = Object.keys(p);
             methods.forEach(m => {
-                let success = ((p[m].rx / p[m].expected) * 100);
+                let success = ((p[m].expected / p[m].rx) * 100);
                 total.tx[index] += p[m].tx;
                 total.rx[index] += p[m].rx;
                 total.success[index] += p[m].expected;
